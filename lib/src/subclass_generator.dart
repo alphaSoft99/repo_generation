@@ -53,9 +53,12 @@ class SubclassGenerator extends GeneratorForAnnotation<SubclassAnnotation> {
       classBuffer.writeln("try{");
       classBuffer.writeln(
           "response = await _apiClient.${methodName.replaceAll("_", "")}(${parametersApi});");
+      classBuffer.writeln("} on SocketException catch (e, stacktrace) {");
+      classBuffer.writeln('debugPrint("Socket exception: \${e.toString()} stacktrace: \$stacktrace");');
+      classBuffer.writeln('return ResponseHandler()..setException(ServerError.withError(message: e.toString()));');
       classBuffer.writeln("} on TypeError catch (e, stacktrace) {");
       classBuffer.writeln(
-          'debugPrint("Socket exception: \${e.toString()} stacktrace: \$stacktrace");');
+          'debugPrint("Type Error: \${e.toString()} stacktrace: \$stacktrace");');
       classBuffer.writeln(
           'return ResponseHandler()..setException(ServerError.withError(message: e.toString()));');
       classBuffer.writeln("} catch(error, stacktrace) {");
