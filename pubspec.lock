@@ -358,9 +358,9 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: HEAD
-      resolved-ref: a0f1f91784109ba4071140174a0fc01fd57f26b8
-      url: "https://github.com/alphaSoft99/repo_annotation.git"
+      ref: master
+      resolved-ref: "1047e5d83dc0ee83d23f7870278342cfcbf30129"
+      url: "https://github.com/SunnatilloShavkatov/repo_annotation.git"
     source: git
     version: "0.0.1"
   shelf:
