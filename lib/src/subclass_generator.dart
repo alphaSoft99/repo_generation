@@ -48,9 +48,15 @@ class SubclassGenerator extends GeneratorForAnnotation<SubclassAnnotation> {
       classBuffer.writeln("${visitor.methods[methodName]?.keys.first.toString().replaceAll('Future<ResponseHandler<', '').replaceAll('>>', '')}? response;");
       classBuffer.writeln("try{");
       classBuffer.writeln("response = await _apiClient.${methodName}(${parametersApi});");
+      classBuffer.writeln("} on SocketException catch (e, stacktrace) {");
+      classBuffer.writeln('debugPrint("Socket exception: \${e.toString()} stacktrace: \$stacktrace");');
+      classBuffer.writeln('return ResponseHandler()..setException(ServerError.withError(message: e.toString()));');
+      classBuffer.writeln("} on TypeError catch (e, stacktrace) {");
+      classBuffer.writeln('debugPrint("Socket exception: \${e.toString()} stacktrace: \$stacktrace");');
+      classBuffer.writeln('return ResponseHandler()..setException(ServerError.withError(message: e.toString()));');
       classBuffer.writeln("} catch(error, stacktrace) {");
       classBuffer.writeln('debugPrint("Exception occurred: \$error stacktrace: \$stacktrace");');
-      classBuffer.writeln('return ResponseHandler()..setException(ServerError.withError(error: error as DioError),);');
+      classBuffer.writeln('return ResponseHandler()..setException(ServerError.withDioError(error: error as DioError),);');
       classBuffer.writeln('}');
       classBuffer.writeln('return ResponseHandler()..data = response;');
       classBuffer.writeln('}');
