@@ -49,14 +49,14 @@ packages:
       name: build_config
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.1.0"
   build_daemon:
     dependency: transitive
     description:
       name: build_daemon
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.1"
+    version: "3.1.0"
   build_resolvers:
     dependency: transitive
     description:
@@ -70,7 +70,7 @@ packages:
       name: build_runner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.5"
+    version: "2.2.0"
   build_runner_core:
     dependency: transitive
     description:
@@ -84,7 +84,7 @@ packages:
       name: build_test
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.5"
   built_collection:
     dependency: transitive
     description:
@@ -276,7 +276,7 @@ packages:
       name: json_annotation
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.4.0"
+    version: "4.6.0"
   logging:
     dependency: transitive
     description:
@@ -357,11 +357,9 @@ packages:
   repo_annotation:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "1047e5d83dc0ee83d23f7870278342cfcbf30129"
-      url: "https://github.com/SunnatilloShavkatov/repo_annotation.git"
-    source: git
+      name: repo_annotation
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.1"
   shelf:
     dependency: transitive
@@ -402,7 +400,7 @@ packages:
       name: source_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.2"
   source_map_stack_trace:
     dependency: transitive
     description:
