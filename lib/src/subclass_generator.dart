@@ -7,7 +7,8 @@ import 'model_visitor.dart';
 
 class SubclassGenerator extends GeneratorForAnnotation<SubclassAnnotation> {
   @override
-  generateForAnnotatedElement(Element element, ConstantReader annotation, BuildStep buildStep) {
+  generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) {
     return _generatedSource(element);
   }
 
@@ -16,43 +17,70 @@ class SubclassGenerator extends GeneratorForAnnotation<SubclassAnnotation> {
 
     element.visitChildren(visitor);
 
-    var className = "${visitor.className}Impl";
+    var className = "${visitor.className.replaceAll("Base", "")}";
 
     var classBuffer = StringBuffer();
 
     // class *Model*Impl
-    classBuffer.writeln("class $className with ${visitor.className} {");
+    classBuffer.writeln("class $className extends ${visitor.className} {");
 
     classBuffer.writeln("final ApiClient _apiClient;");
     classBuffer.writeln("${className}(this._apiClient);");
     classBuffer.writeln('');
 
     //method
-    for(var methodName in visitor.methods.keys){
+    for (var methodName in visitor.methods.keys) {
       String parameters = "{";
+      String parameter = "";
       String parametersApi = '';
       visitor.methods[methodName]?.values.first.forEach((key, value) {
         parameters += "required ${value} ${key}, ";
+        parameter += "${key} :${key} , ";
         parametersApi += "${key}, ";
       });
-      if(parameters.length == 1){
+      if (parameters.length == 1) {
         parameters = '';
         parametersApi = '';
-      }
-      else {
+      } else {
         parameters += "}";
         parametersApi.substring(0, parametersApi.length - 2);
       }
       classBuffer.writeln("@override");
-      classBuffer.writeln("${visitor.methods[methodName]?.keys.first} ${methodName} (${parameters}) async {");
-      classBuffer.writeln("${visitor.methods[methodName]?.keys.first.toString().replaceAll('Future<ResponseHandler<', '').replaceAll('>>', '')}? response;");
+      classBuffer.writeln(
+          "${visitor.methods[methodName]?.keys.first} ${methodName} (${parameters}) async {");
+      classBuffer.writeln(
+          "${visitor.methods[methodName]?.keys.first.toString().replaceAll('Future<ResponseHandler<', '').replaceAll('>>', '')}? response;");
       classBuffer.writeln("try{");
-      classBuffer.writeln("response = await _apiClient.${methodName}(${parametersApi});");
+      classBuffer.writeln(
+          "response = await _apiClient.${methodName.replaceAll("_", "")}(${parametersApi});");
+      classBuffer.writeln("} on SocketException catch (e, stacktrace) {");
+      classBuffer.writeln('debugPrint("Socket exception: \${e.toString()} stacktrace: \$stacktrace");');
+      classBuffer.writeln('return ResponseHandler()..setException(ServerError.withError(message: e.toString()));');
+      classBuffer.writeln("} on TypeError catch (e, stacktrace) {");
+      classBuffer.writeln(
+          'debugPrint("Type Error: \${e.toString()} stacktrace: \$stacktrace");');
+      classBuffer.writeln(
+          'return ResponseHandler()..setException(ServerError.withError(message: e.toString()));');
       classBuffer.writeln("} catch(error, stacktrace) {");
-      classBuffer.writeln('debugPrint("Exception occurred: \$error stacktrace: \$stacktrace");');
-      classBuffer.writeln('return ResponseHandler()..setException(ServerError.withError(error: error as DioError),);');
+      classBuffer.writeln(
+          'debugPrint("Exception occurred: \$error stacktrace: \$stacktrace");');
+      classBuffer.writeln(
+          'return ResponseHandler()..setException(ServerError.withDioError(error: error as DioError),);');
       classBuffer.writeln('}');
       classBuffer.writeln('return ResponseHandler()..data = response;');
+      classBuffer.writeln('}');
+      classBuffer
+          .writeln("Future<dynamic> ${methodName.replaceAll("_", "")} (${parameters}) async {");
+      classBuffer.writeln(
+          "    final response = await ${methodName}($parameter);");
+      classBuffer.writeln("    if (response.data != null) {");
+      classBuffer.writeln("      return response.data;");
+      classBuffer.writeln(
+          '} else if (response.getException()?.getErrorMessage() != "Canceled") {');
+      classBuffer.writeln('      return await getErrorMessage(');
+      classBuffer.writeln(' response.getException()?.getErrorMessage() ?? "",');
+      classBuffer.writeln(');');
+      classBuffer.writeln('}');
       classBuffer.writeln('}');
     }
 
