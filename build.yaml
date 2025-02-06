@@ -1,13 +1,13 @@
 #targets:
 #  $default:
 #    builders:
-#      better_repo_generation:
+#      repo_generation:
 #        enabled: true
 #
 #builders:
-#  better_repo_generation:
-##    target: ":better_repo_generation"
-#    import: "package:better_repo_generation/builder.dart"
+#  repo_generation:
+##    target: ":repo_generation"
+#    import: "package:repo_generation/builder.dart"
 #    builder_factories: [ "subclassGen", "extGen" ]
 #    build_extensions: { ".dart": [ ".g.dart" ] }
 #    auto_apply: dependents
@@ -19,12 +19,12 @@
 targets:
   $default:
     builders:
-      better_repo_generation:
+      repo_generation:
         enabled: true
 
 builders:
   floor_generator:
-    import: "package:better_repo_generation/builder.dart"
+    import: "package:repo_generation/builder.dart"
     # The builder function name, which gets called on build/watch
     builder_factories: ["subclassGen"]
     # The 'partId' argument to 'SharedPartBuilder' is 'floor'

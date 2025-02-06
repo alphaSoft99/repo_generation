@@ -1,4 +1,4 @@
-better_repo_generation
+repo_generation
 A lightweight Dart package providing powerful annotations for repository patterns, simplifying data handling and improving code readability. Perfect for projects that require clean architecture and separation of concerns.
 
 Features
