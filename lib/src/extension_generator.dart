@@ -1,7 +1,7 @@
 import 'package:analyzer/dart/element/element.dart';
+import 'package:better_repo_annotation/repo_annotation.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:source_gen/source_gen.dart';
-import 'package:repo_annotation/repo_annotation.dart';
 
 import 'model_visitor.dart';
 

@@ -1,4 +1,4 @@
-import 'package:repo_annotation/repo_annotation.dart';
+import 'package:better_repo_annotation/repo_annotation.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
@@ -50,7 +50,7 @@ class SubclassGenerator extends GeneratorForAnnotation<SubclassAnnotation> {
       classBuffer.writeln("response = await _apiClient.${methodName}(${parametersApi});");
       classBuffer.writeln("} catch(error, stacktrace) {");
       classBuffer.writeln('debugPrint("Exception occurred: \$error stacktrace: \$stacktrace");');
-      classBuffer.writeln('return ResponseHandler()..setException(ServerError.withError(error: error as DioError),);');
+      classBuffer.writeln('return ResponseHandler()..setException(ServerError.withError(error: error as DioException),);');
       classBuffer.writeln('}');
       classBuffer.writeln('return ResponseHandler()..data = response;');
       classBuffer.writeln('}');
